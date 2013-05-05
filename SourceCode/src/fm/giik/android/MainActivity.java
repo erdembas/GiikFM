@@ -21,12 +21,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import Class.*;
 import org.xml.sax.SAXException;
 
 import fm.giik.android.R;
 
 import Class.Podcast;
 import Class.PodcastAdapter;
+import android.media.ExifInterface;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -74,8 +76,13 @@ public class MainActivity extends Activity implements OnClickListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		lvPodcast = (ListView) findViewById(R.id.PodcastList);
-		new GetPodCastList().execute();
-
+		
+		if (NetState.Kontrol(this)) {
+			new GetPodCastList().execute();
+		}else {
+			Dialog.showAlertDialog(this, "Ýnternet Baðlantýsý", "Uygulamayý kullanabilmeniz için internet baðlantýsý gereklidir!", false);
+		}
+		
 		Player =(RelativeLayout)findViewById(R.id.Player);
 		
 		seekBarProgress = (SeekBar) findViewById(R.id.seekBar1);
