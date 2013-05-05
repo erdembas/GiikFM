@@ -6,13 +6,13 @@ public class Podcast {
 	String YuklenmeTarih;
 	String URL;
 	String AudioURL;
-	double DosyaBoyut;
+	Long DosyaBoyut;
 	
 
-	public double getDosyaBoyut() {
+	public Long getDosyaBoyut() {
 		return DosyaBoyut;
 	}
-	public void setDosyaBoyut(double dosyaBoyut) {
+	public void setDosyaBoyut(Long dosyaBoyut) {
 		DosyaBoyut = dosyaBoyut;
 	}
 	public String getAudioURL() {

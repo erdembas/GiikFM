@@ -32,13 +32,18 @@ import android.media.ExifInterface;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.renderscript.RSSurfaceView;
 import android.R.string;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -120,7 +125,18 @@ public class MainActivity extends Activity implements OnClickListener,
 							public void onClick(DialogInterface dialog, int item) {
 								dialog.cancel();
 								if (item == 0) {
-									//Ýndirme özelliði yapýlacak...
+									String DownloadUrl = PodcastListe.get(arg2).getAudioURL().toString();
+									 String fileName = DownloadUrl.substring(DownloadUrl.lastIndexOf('/') + 1);
+									    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(DownloadUrl));
+									    request.setDescription(PodcastListe.get(arg2).getBaslik());  
+									    request.setTitle("Dosya Boyutu: " + String.valueOf(FileSizeFormatter.formatFileSize(PodcastListe.get(arg2).getDosyaBoyut())));                 
+									    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+									        request.allowScanningByMediaScanner();
+									        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+									    }
+									    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,  fileName);
+									    DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+									    manager.enqueue(request);
 								} else if (item == 1) {
 									SimdiCalan = PodcastListe.get(arg2)
 											.getAudioURL();
